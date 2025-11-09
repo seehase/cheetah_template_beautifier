@@ -20,11 +20,11 @@ options:
   -h, --help            show this help message and exit
   -o, --outfile OUTFILE
                         The path to the output file. Not valid with --recursive.
-  -r, --recursive       Recursively find and reformat all *.tmpl files in the source directory.
+  -r, --recursive       Recursively find and reformat all *.tmpl and *.inc files in the source directory.
   --version             show program's version number and exit
 """
 # Define the script version
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 def reformat_cheetah_template(source_code):
     """
@@ -157,7 +157,7 @@ def main():
     parser = argparse.ArgumentParser(description="Beautifies Cheetah templates by reformatting indentation.")
     parser.add_argument("source", nargs='?', default=None, help="The path to the source file or directory.")
     parser.add_argument("-o", "--outfile", help="The path to the output file. Not valid with --recursive.")
-    parser.add_argument("-r", "--recursive", action="store_true", help="Recursively find and reformat all *.tmpl files in the source directory.")
+    parser.add_argument("-r", "--recursive", action="store_true", help="Recursively find and reformat all *.tmpl and *.inc files in the source directory.")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     args = parser.parse_args()
 
@@ -175,7 +175,7 @@ def main():
 
         for root, _, files in os.walk(args.source):
             for file in files:
-                if file.endswith(".tmpl"):
+                if file.endswith((".tmpl", ".inc")):
                     file_path = os.path.join(root, file)
                     process_file(file_path)
     else:
